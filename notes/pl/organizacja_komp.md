@@ -12,11 +12,9 @@ sterownik (rozpoznaje jego sygnały) i tworzy dla reszty systemu operacyjnego
 jednolity interfejs do urządzenia. Jednostka centralna i sterowniki urządzeń
 mogą pracować równolegle, rywalizując o cykle pamięci. Zapewnienie upo-
 rządkowanego dostępu do pamięci jest zadaniem sterownika pamięci, który
-ten dostęp synchronizuje.
+ten dostęp synchronizuje. ^device-driver-interface
 
-W następnych podrozdziałach podajemy niektóre podstawowe wiadomości
-dotyczące działania takiego systemu, koncentrując się na jego trzech zasa-
-dniczych aspektach. Zaczynamy od przerwań, które powiadamiają jednostkę
+Zaczynamy od przerwań, które powiadamiają jednostkę
 centralną o zdarzeniach wymagających uwagi. Potem omawiamy strukturę
 pamięci i budowę wejścia-wyjścia.
 ```
@@ -41,4 +39,8 @@ pamięci i budowę wejścia-wyjścia.
 
 ## Przemyślenia ???
 - Mikrokontrolery(MCU) to taki układ, który ma CPU, RAM, każdy takie CPU ma swój protokuł, czyli w jaki sposób będzie odbierać sygnał i go przetwarzać. 
-Takie mikrokontrolery mają swoją też pamieć, więc mogą przyjmować rozkazy, które definiują co będzie na wyjściu
+- Takie mikrokontrolery mają swoją też pamieć, więc mogą przyjmować rozkazy, które definiują co będzie na wyjściu
+- UWAGA! Rozkazy są częścią języka procesora, historia tego jest prosta:
+    - Każdy rozkaz to liczba 10110000 01100001 zakodowana w pamięci
+    - TO KOSZMAR, więc wprowadzają mnemoniki MOV, ADD, JMP `MOV AL, 0x61    →    10110000 01100001`
+

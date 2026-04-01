@@ -66,6 +66,12 @@ mianem „kontrolera”). Jeszcze inna spotykana nazwa to program sterujący urz
 
 ```
 
+
+**Rules**
+- Nasz OS musi mieć moduł obsługi sterownika: [[organizacja_komp#^device-driver-interfejs]] 
+- Sprzęt(myszka, klawiatura, monitor, sieć etc.) może spowodować przerwanie w dowolnej chwili, wysyłając sygnał do
+procesora, zwykle za pośrednictwem **szyny systemowej**
+
 ## Koncept
 - **Przerwanie (interrupt)**: asynchroniczny sygnał od urządzenia, żądający uwagi CPU.
 - **Pułapka (trap)**: synchroniczne „przerwanie” z CPU (np. wywołanie systemowe, błąd dzielenia).

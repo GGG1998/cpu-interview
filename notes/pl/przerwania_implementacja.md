@@ -15,7 +15,7 @@ powrotu z przerwania (return from interrupt) mający na celu przywrócenie
 procesora do stanu wykonywania przerwanego programu. Mówimy, że ste-
 rownik urządzenia zgłasza (raises) przerwanie za pomocą sygnału podawanego
 w linii żądania przerwania, procesor przechwytuje (catches) przerwanie i eks-
-pedjuje je do procedury obsługi przerwania, a ta czyści przerwanie, obsługując
+pedjuje je do procedury obsługi przerwania(ISR), a ta czyści przerwanie, obsługując
 urządzenie. Na rysunku 1.4 są pokazane elementy cyklu wejścia-wyjścia ste-
 rowanego za pomocą przerwania.
 
@@ -105,6 +105,7 @@ Rys. 1.5. Tablica wektorów zdarzeń procesora Intela
 ```
 
 ## Koncept
+
 - **Linie przerwań**: NMI (niemaskowalne) dla krytycznych błędów; IRQ maskowalne do sygnalizacji I/O.
 - **Wektor przerwań**: numer → wpis w tablicy wektorów/IDT → adres ISR.
 - **Łańcuchowanie przerwań**: wpis wektora wskazuje listę ISR; kolejne ISR sprawdzają, kto obsłuży zdarzenie.
@@ -114,6 +115,7 @@ Rys. 1.5. Tablica wektorów zdarzeń procesora Intela
 - **Dolne połówki**: odroczona praca poza ISR (softirq/tasklet/workqueue) dla dłuższych operacji.
 
 ### Przebieg implementacyjny (wysoki poziom)
+
 1. Urządzenie zgłasza IRQ do kontrolera przerwań.
 2. Kontroler arbitruje, wyznacza numer wektora i sygnalizuje CPU.
 3. CPU kończy bieżący rozkaz, zapisuje kontekst i podnosi poziom priorytetu/maskuje źródło.
@@ -121,3 +123,4 @@ Rys. 1.5. Tablica wektorów zdarzeń procesora Intela
 5. ISR: odczyt statusu urządzenia, przeniesienie/oznaczenie danych, wysłanie EOI do kontrolera.
 6. ISR zleca dalszą pracę do dolnej połówki i wraca (instrukcja „return from interrupt”).
 7. CPU przywraca kontekst i wznawia przerwany kod użytkownika/jądra.
+

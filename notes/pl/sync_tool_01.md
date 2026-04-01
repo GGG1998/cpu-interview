@@ -1,8 +1,9 @@
 ### Przypomnienie
-[IMG_88993.png] - odczytywanie rozkazów z pamięci
-[IMG_8895.png](IMG_8895) - sekcje procesu, licznik rozkazów, zawartość rejestru procesora
-[../../IMG_8898.png](IMG_8898) - blok kontrolnu(stan procesu, rejestry CPU)
-[IMG_8904.png](IMG_8904) - context switching, reprezentacja kontekstu odbywa się w bloku kontrolnym
+[przerwania](./przerwania.md) oraz [przerwania](./przerwania_implementacja.md)
+[IMG_8893.png](../../png/IMG_8893.png) - odczytywanie rozkazów z pamięci
+[IMG_8895.png](../../png/IMG_8895.png) - sekcje procesu, licznik rozkazów, zawartość rejestru procesora
+[IMG_8898.png](../../png/IMG_8898.png) - blok kontrolnu(stan procesu, rejestry CPU)
+[IMG_8904.png](../../png/IMG_8904.png) - context switching, reprezentacja kontekstu odbywa się w bloku kontrolnym
 
 # Case study
 Model: producer-consumer
@@ -27,6 +28,9 @@ Operacje `licznik++` i `licznik--` nie są atomowe — składają się z 3 instr
 
 Niech rejestr eax producenta = będzie rejestr1
 Niech rejestr eax konsumera = będzie rejestr2
+
+Niech rejestr1 i rejestr2 są tym samym rejestrem fizycznym*
+*
 
 
 ```asm
