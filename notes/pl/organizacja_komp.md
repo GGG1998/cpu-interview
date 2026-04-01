@@ -21,6 +21,42 @@ pamięci i budowę wejścia-wyjścia.
 
 ## Koncept
 - **Magistrala (bus) i wspólna pamięć**: centralny kanał komunikacji łączący procesory, sterowniki urządzeń i pamięć.
+zestaw przewodów łączących komponenty
+Fizycznie to po prostu ścieżki elektryczne na płycie głównej. Są dwa główne typy:
+Szyna adresowa (address bus)
+
+"GDZIE" — CPU podaje adres komórki pamięci, do której chce się dostać.
+
+- Jednokierunkowa: CPU → pamięć
+- Szerokość determinuje ile pamięci można zaadresować
+- 16 bitów → 2^16 = 64 KB
+- 32 bity → 2^32 = 4 GB
+- 64 bity → teoretycznie 16 EB (exabajtów)
+
+Szyna danych (data bus)
+
+"CO" — tędy przepływają faktyczne dane (wartości, rozkazy).
+
+- Dwukierunkowa: CPU ↔ pamięć
+- Szerokość określa ile danych na raz można przesłać
+- 8 bitów → 1 bajt na raz
+- 32 bity → 4 bajty na raz
+- 64 bity → 8 bajtów na raz
+
+Jak to działa razem
+
+Odczyt z pamięci:
+1. CPU wystawia adres na szynę adresową:  [0x00FF]  →  pamięć
+2. Pamięć odsyła dane szyną danych:      CPU  ←  [01100001]
+
+Zapis do pamięci:
+1. CPU wystawia adres na szynę adresową:  [0x00FF]  →  pamięć
+2. CPU wysyła dane szyną danych:          CPU  →  [01100001]  →  pamięć
+
+Jest też trzecia: szyna sterująca (control bus)
+
+"JAK" — sygnały typu: odczyt/zapis, przerwanie, zegar. Koordynuje całą komunikację.
+
 - **Wiele procesorów (CPU)**: system może mieć więcej niż jeden procesor; implikacje dla współdzielenia zasobów.
 - **Sterowniki urządzeń (device controllers)**: sprzętowe kontrolery przypisane do typów urządzeń (dyski, audio, wyświetlacze itp.).
 - **Lokalna pamięć buforowa kontrolera**: buforowanie danych na poziomie kontrolera przed/po transferze do wspólnej pamięci.
@@ -40,7 +76,7 @@ pamięci i budowę wejścia-wyjścia.
 ## Przemyślenia ???
 - Mikrokontrolery(MCU) to taki układ, który ma CPU, RAM, każdy takie CPU ma swój protokuł, czyli w jaki sposób będzie odbierać sygnał i go przetwarzać. 
 - Takie mikrokontrolery mają swoją też pamieć, więc mogą przyjmować rozkazy, które definiują co będzie na wyjściu
-- UWAGA! Rozkazy są częścią języka procesora, historia tego jest prosta:
+- UWAGA! Rozkazy są częścią procesora(różne architektury, różne kodowanie), historia tego jest prosta:
     - Każdy rozkaz to liczba 10110000 01100001 zakodowana w pamięci
-    - TO KOSZMAR, więc wprowadzają mnemoniki MOV, ADD, JMP `MOV AL, 0x61    →    10110000 01100001`
+    - TO KOSZMAR, więc wprowadzają mnemoniki takie jak np: `MOV AL, 0x61    →    10110000 01100001`
 

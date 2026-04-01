@@ -28,10 +28,12 @@ Operacje `licznik++` i `licznik--` nie są atomowe — składają się z 3 instr
 
 Niech rejestr eax producenta = będzie rejestr1
 Niech rejestr eax konsumera = będzie rejestr2
+Niech rejestr1 i rejestr2 są tym samym rejestrem fizycznym
 
-Niech rejestr1 i rejestr2 są tym samym rejestrem fizycznym*
-*
+"zawartość takiego rejestru może podlegać przechowywaniu i odtwarzaniu przez ISR"
 
+A to znaczy, że procedura ta zapisuje stan do bloku kontrolnego i go odtwarza, czyli będzie nadpisywać
+tymsamym NIE BĘDĄ się synchronizować
 
 ```asm
 ; licznik++ (producent)

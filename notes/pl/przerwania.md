@@ -65,12 +65,10 @@ mianem „kontrolera”). Jeszcze inna spotykana nazwa to program sterujący urz
 
 
 ```
-
-
 **Rules**
 - Nasz OS musi mieć moduł obsługi sterownika: [[organizacja_komp#^device-driver-interfejs]] 
 - Sprzęt(myszka, klawiatura, monitor, sieć etc.) może spowodować przerwanie w dowolnej chwili, wysyłając sygnał do
-procesora, zwykle za pośrednictwem **szyny systemowej**
+procesora, zwykle za pośrednictwem **szyny systemowej**(Architektura Von Neumana)
 
 ## Koncept
 - **Przerwanie (interrupt)**: asynchroniczny sygnał od urządzenia, żądający uwagi CPU.
@@ -81,6 +79,7 @@ procesora, zwykle za pośrednictwem **szyny systemowej**
 - **Bufor urządzenia i DMA**: dane trafiają do lokalnego bufora kontrolera lub bezpośrednio do pamięci przez DMA (mniej pracy CPU).
 - **Przerwania zegarowe**: tyk systemowy do planisty, odmierzania czasu, time‑outów.
 - **Sekcje krytyczne**: czasowe maskowanie przerwań/spinlocki chronią dane; wpływ na latencję.
+- **Architektura Von Neumana** - https://lo1.lebork.pl/doc/budowa_komputera_v1.pdf
 
 ### Typowy przebieg operacji I/O
 1. Driver zapisuje rejestry kontrolera (co, skąd/dokąd, ile).
@@ -88,3 +87,6 @@ procesora, zwykle za pośrednictwem **szyny systemowej**
 3. Po zakończeniu generuje przerwanie do kontrolera przerwań.
 4. CPU zapisuje kontekst i skacze do ISR; ISR odczytuje status, potwierdza, przenosi niewielką porcję danych/zdarzeń do kolejek.
 5. Dalsza, cięższa praca jest odroczona do „dolnej połowy” (softirq/workqueue) i wykonywana poza ISR.
+
+### TODO
+"Procedura obsługi przerwania jest więc wywoływana wprost przez sprzęt. " - Co to znaczy?
