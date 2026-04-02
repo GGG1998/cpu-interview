@@ -115,3 +115,93 @@ int main() {
     - Wzajemne wykluczenie: Jeśli proces P działa w swojej sekcji krytycznej, żaden inny proces nie działa w sekcji krytycznej
     - Postęp: 
     - Ograniczone czekanie
+
+## Obsługa sekcji krytycznej w OS:
+- Jądro wywłaszczające: wywłaszczenie procesu w trybie jądra
+- Jądro niewywłaszczające: proces będzie wykonywany do wyjścia z trybu jądra, albo dopóki się nie zablokuje
+  lub dobrowolnie nie odda kontroli nad CPU
+
+## Rozwiazanie Petersona
+
+> UWAGA: to tylko klasyczna prezentacja rozwiazania. Na wspolczesnych architekturach moze nie dzialac
+> poprawnie ze wzgledu na reordering instrukcji `load`/`store`. W praktyce uzywa sie operacji atomowych
+> lub barier pamieci.
+
+Rozwiazanie **programowe** (software-based) dla **2 procesow** (P_i i P_j, gdzie j = 1 - i).
+
+### Wspoldzielone dane
+
+```c
+int ruch;              // czyja kolej na wejscie do sekcji krytycznej
+boolean znacznik[2];   // czy dany proces chce wejsc
+```
+
+- `ruch` - wskazuje ktoremu procesowi przypada kolej
+- `znacznik[i] == true` - proces P_i jest gotowy do wejscia do sekcji krytycznej
+
+### Struktura procesu P_i
+
+```c
+while (true) {
+    znacznik[i] = true;       // chce wejsc. LOCK()
+    ruch = j;                 // ustepuje drugiemu
+    while (znacznik[j] && ruch == j)
+        ;                     // czekaj (busy wait)
+
+    /* sekcja krytyczna */
+
+    znacznik[i] = false;      // wychodzi. UNLOCK()
+
+    /* reszta */
+}
+```
+
+Proces ustawia swoj znacznik i oddaje pierwszeństwo drugiemu. Wchodzi do SK gdy:
+- drugi proces nie chce wejsc (`znacznik[j] == false`), **lub**
+- jest jego kolej (`ruch == i`)
+
+### Dowod poprawnosci
+
+1. **Wzajemne wykluczanie** - P_i wchodzi tylko gdy `znacznik[j] == false` lub `ruch == i`.
+   `ruch` moze byc 0 albo 1 - nie obydwoma naraz. Wiec oba procesy nie moga jednoczesnie przejsc przez `while`.
+
+2. **Postep** - P_i moze utknac w petli `while` tylko gdy `znacznik[j] == true && ruch == j`.
+   Jesli P_j nie chce wejsc -> `znacznik[j] == false` -> P_i natychmiast przechodzi.
+
+3. **Ograniczone czekanie** - jesli P_j wychodzi z SK, ustawia `znacznik[j] = false` -> P_i wchodzi.
+   Jesli P_j chce wejsc ponownie, ustawia `ruch = i` -> P_i wchodzi. Czekanie co najwyzej jedno.
+
+### Dlaczego nie dziala na wspolczesnych architekturach
+
+Procesory i kompilatory moga zmieniac kolejnosc operacji load/store dla wydajnosci.
+
+**Przyklad:**
+
+```c
+// wspoldzielone dane
+boolean znacznik = false;
+int x = 0;
+
+// watek 1:              // watek 2:
+while (!znacznik)        x = 100;
+    ;                    znacznik = true;
+print x;
+```
+
+Oczekujemy `x = 100`, ale procesor moze przestawic instrukcje watku 2
+(`znacznik = true` PRZED `x = 100`) -> watek 1 przeczyta `x = 0`.
+
+**Wplyw na Petersona** - jesli procesor przestawi kolejnosc w sekcji wejsciowej:
+
+```
+Proces_0: -> ruch = 1 ──────────────────> znacznik[0] = true ──> SK
+Proces_1: ────> ruch = 0, znacznik[1] = true ──────> SK
+
+Czas ──>
+```
+
+Oba procesy trafiaja do sekcji krytycznej jednoczesnie - **wzajemne wykluczanie zlamane**.
+
+**Wniosek:** jedynym sposobem zapewnienia wzajemnego wykluczania sa sprzetowe narzedzia synchronizacji
+(bariery pamieci, instrukcje atomowe).
+

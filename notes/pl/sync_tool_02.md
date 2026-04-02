@@ -1,0 +1,1 @@
+# Sprzętowe środki synchronizacji
