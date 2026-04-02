@@ -90,3 +90,4 @@ procesora, zwykle za pośrednictwem **szyny systemowej**(Architektura Von Neuman
 
 ### TODO
 "Procedura obsługi przerwania jest więc wywoływana wprost przez sprzęt. " - Co to znaczy?
+http://www.pwsz.legnica.edu.pl/~dudajan/AKw02.pdf
