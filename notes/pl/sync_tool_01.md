@@ -109,3 +109,9 @@ int main() {
 ```
 
 # Sekcja krytyczna
+**Sekcja krytyczna** - segment kodu, który jest współdzielony z innym procesem
+**Problem sekcji krytycznej** - jak zaprojektować kooperacje pomiędzy procesami chcący synchronizować swoją aktywność
+**Kryteria rozwiązania problemu sekcji krytycznej**
+    - Wzajemne wykluczenie: Jeśli proces P działa w swojej sekcji krytycznej, żaden inny proces nie działa w sekcji krytycznej
+    - Postęp: 
+    - Ograniczone czekanie
